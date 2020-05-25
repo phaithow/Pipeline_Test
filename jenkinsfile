@@ -1,0 +1,50 @@
+Pipeline {
+	agent any
+	stage {
+				stage ('Gui_First_Stage') { 
+											steps {
+													echo 'Hi, this is phaithoon from MCC'
+													}
+									      }
+				stage ('Gui_Second_Stage') {
+											step {
+													input ('Do you wan to proceed?')
+													}
+											}
+				stage ('Gui_Third_Stage') {			
+											when {
+													not {
+															branch "master"
+														}
+												}
+											step {
+													echo ('Hello')
+												
+												}
+											}
+				stage ('Gui_Four_Stage'){
+										parallel {
+										stage('Unit Test'){
+															steps {
+																	echo "Running the unit test...."
+																	}
+															}
+										          
+										
+										stage('Integration Test'){
+																	agent{
+																			docker {
+																						reuseNode	false
+																						image 'sca'
+																					}
+																			steps	{
+																						echo 'Running the integration test..'
+																					}
+																		}
+										                         }
+										
+													}
+										}
+			}
+		}
+											
